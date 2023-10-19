@@ -1,4 +1,9 @@
 console.log("[debug] Monitoring begin.");
+
+const adTextQuerySelector = "a.ytp-title-link.yt-uix-sessionlink.ytp-title-fullerscreen-link";
+const usualTitleSelector = "yt-formatted-string.style-scope.ytd-watch-metadata";
+const videoPlayerSelector = "video.video-stream.html5-main-video";
+
 let oldHref = window.location.href;
 let isRunningAdObserver = window.location.href.includes("watch?v=");
 
@@ -11,9 +16,9 @@ const observer = new MutationObserver((mutations) => {
 
 async function doBackgroundAdsChecker() {
   while (true) {
-    if (isRunningAdObserver) {      
-      const usualAdTextElement = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink ytp-title-fullerscreen-link")[0];
-      const usualTitleElement = document.querySelector("yt-formatted-string.style-scope.ytd-watch-metadata");
+    if (isRunningAdObserver) {
+      const usualAdTextElement = document.querySelector(adTextQuerySelector);
+      const usualTitleElement = document.querySelector(usualTitleSelector);
 
       let iCanHazFlag = false;
       
@@ -22,10 +27,12 @@ async function doBackgroundAdsChecker() {
         continue;
       }
   
-      const videoPlayer = document.querySelector("video.video-stream.html5-main-video");
+      const videoPlayer = document.querySelector(videoPlayerSelector);
       
-      if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") continue;
-      if (usualAdTextElement.innerText != usualTitleElement.innerText) {
+      if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") {
+        await new Promise((i) => setTimeout(i, 100));
+        continue;
+      } else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
         iCanHazFlag = true;
 
         videoPlayer.pause();
