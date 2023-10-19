@@ -22,6 +22,7 @@ async function doBackgroundAdsChecker() {
   
       const videoPlayer = document.querySelector("video.video-stream.html5-main-video");
   
+      if (usualAdTextElement.innerText.trim() == "") continue;
       while (usualAdTextElement.innerText != usualTitleElement.innerText) {
         // Psychic attack this mofo
         videoPlayer.muted = true;
