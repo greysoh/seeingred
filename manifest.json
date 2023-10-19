@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "SeeingRed",
+  "version": "0.1.0",
+
+  "description": "Skip ads on YouTube with a very stupid method.",
+
+  "icons": {
+    "48": "icons/48px.png"
+  },
+
+  "permissions": [],
+  "host_permissions": ["*://*/*"],
+
+  "web_accessible_resources": [{
+    "matches": ["*://*.youtube.com/*"],
+    "resources": [
+      "src/index.mjs"
+    ]
+  }],
+
+  "externally_connectable": {
+    "matches": ["*://*.youtube.com/*"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["init.mjs"],
+      "run_at": "document_start"
+    }
+  ]
+}
