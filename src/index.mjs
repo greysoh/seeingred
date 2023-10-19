@@ -24,8 +24,8 @@ async function doBackgroundAdsChecker() {
   
       const videoPlayer = document.querySelector("video.video-stream.html5-main-video");
       
-      if (usualAdTextElement.innerText.trim() == "") continue;
-      else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
+      if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") continue;
+      if (usualAdTextElement.innerText != usualTitleElement.innerText) {
         iCanHazFlag = true;
 
         videoPlayer.pause();
@@ -33,8 +33,6 @@ async function doBackgroundAdsChecker() {
       }
 
       while (usualAdTextElement.innerText != usualTitleElement.innerText) {
-        console.log(usualAdTextElement.innerText, usualTitleElement.innerText);
-        // Psychic attack this mofo
         videoPlayer.currentTime += 2;
   
         await new Promise((i) => setTimeout(i, 10));
