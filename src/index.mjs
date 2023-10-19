@@ -14,52 +14,52 @@ const observer = new MutationObserver((mutations) => {
   }
 });
 
+async function doMainPageAdsChecker() {
+}
+
 async function doBackgroundAdsChecker() {
+  const usualAdTextElement = document.querySelector(adTextQuerySelector);
+  const usualTitleElement = document.querySelector(usualTitleSelector);
+
+  let iCanHazFlag = false;
+  if (!usualAdTextElement || !usualTitleElement) return;
+  
+  const videoPlayer = document.querySelector(videoPlayerSelector);
+  if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") return;
+  
+  else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
+    iCanHazFlag = true;
+
+    videoPlayer.style.visibility = "hidden";
+    videoPlayer.pause();
+    videoPlayer.muted = true;
+  }
+
+  while (usualAdTextElement.innerText != usualTitleElement.innerText) {
+    videoPlayer.currentTime += 4;
+    await new Promise((i) => setTimeout(i, 5));
+  }
+
+  if (iCanHazFlag) {
+    videoPlayer.style.visibility = "visible";
+    videoPlayer.muted = false;
+    videoPlayer.currentTime = 0; // TODO: remove this?
+
+    videoPlayer.play();
+  }
+}
+
+async function oneTrueMain() {
   while (true) {
-    if (isRunningAdObserver) {
-      const usualAdTextElement = document.querySelector(adTextQuerySelector);
-      const usualTitleElement = document.querySelector(usualTitleSelector);
+    if (isRunningAdObserver) await doBackgroundAdsChecker();
+    else await doMainPageAdsChecker();
 
-      let iCanHazFlag = false;
-      
-      if (!usualAdTextElement || !usualTitleElement) {
-        await new Promise((i) => setTimeout(i, 100));
-        continue;
-      }
-  
-      const videoPlayer = document.querySelector(videoPlayerSelector);
-      
-      if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") {
-        await new Promise((i) => setTimeout(i, 100));
-        continue;
-      } else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
-        iCanHazFlag = true;
-
-        videoPlayer.style.visibility = "hidden";
-        videoPlayer.pause();
-        videoPlayer.muted = true;
-      }
-
-      while (usualAdTextElement.innerText != usualTitleElement.innerText) {
-        videoPlayer.currentTime += 4;
-        await new Promise((i) => setTimeout(i, 10));
-      }
-
-      if (iCanHazFlag) {
-        videoPlayer.style.visibility = "visible";
-        videoPlayer.muted = false;
-        videoPlayer.currentTime = 0; // TODO: remove this?
-
-        videoPlayer.play();
-      }
-    }
-  
     await new Promise((i) => setTimeout(i, 100));
   }
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
-  doBackgroundAdsChecker();
+  oneTrueMain();
 
   observer.observe(document.querySelector("body"), {
     childList: true,
