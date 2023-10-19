@@ -35,21 +35,22 @@ async function doBackgroundAdsChecker() {
       } else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
         iCanHazFlag = true;
 
+        videoPlayer.style.visibility = "hidden";
         videoPlayer.pause();
         videoPlayer.muted = true;
       }
 
       while (usualAdTextElement.innerText != usualTitleElement.innerText) {
-        videoPlayer.currentTime += 2;
-  
+        videoPlayer.currentTime += 4;
         await new Promise((i) => setTimeout(i, 10));
       }
 
       if (iCanHazFlag) {
-        videoPlayer.play();
-
+        videoPlayer.style.visibility = "visible";
         videoPlayer.muted = false;
         videoPlayer.currentTime = 0; // TODO: remove this?
+
+        videoPlayer.play();
       }
     }
   
