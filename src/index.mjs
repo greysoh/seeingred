@@ -14,6 +14,8 @@ async function doBackgroundAdsChecker() {
     if (isRunningAdObserver) {      
       const usualAdTextElement = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink ytp-title-fullerscreen-link")[0];
       const usualTitleElement = document.querySelector("yt-formatted-string.style-scope.ytd-watch-metadata");
+
+      let iCanHazFlag = false;
       
       if (!usualAdTextElement || !usualTitleElement) {
         await new Promise((i) => setTimeout(i, 100));
@@ -21,19 +23,29 @@ async function doBackgroundAdsChecker() {
       }
   
       const videoPlayer = document.querySelector("video.video-stream.html5-main-video");
-  
+      
       if (usualAdTextElement.innerText.trim() == "") continue;
-      while (usualAdTextElement.innerText != usualTitleElement.innerText) {
-        // Psychic attack this mofo
-        videoPlayer.muted = true;
+      else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
+        iCanHazFlag = true;
+
         videoPlayer.pause();
-        videoPlayer.currentTime += 1;
-        videoPlayer.play();
+        videoPlayer.muted = true;
+      }
+
+      while (usualAdTextElement.innerText != usualTitleElement.innerText) {
+        console.log(usualAdTextElement.innerText, usualTitleElement.innerText);
+        // Psychic attack this mofo
+        videoPlayer.currentTime += 2;
   
         await new Promise((i) => setTimeout(i, 10));
       }
 
-      videoPlayer.muted = false;
+      if (iCanHazFlag) {
+        videoPlayer.play();
+
+        videoPlayer.muted = false;
+        videoPlayer.currentTime = 0; // TODO: remove this?
+      }
     }
   
     await new Promise((i) => setTimeout(i, 100));
