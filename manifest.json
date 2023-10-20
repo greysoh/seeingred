@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "SeeingRed",
-  "version": "0.1.0",
+  "version": "1.0.0",
 
-  "description": "Skip ads on YouTube with a very stupid method.",
+  "description": "A stupidly simple YouTube adblock implementation.",
 
   "icons": {
     "48": "icons/48px.png"
