@@ -3,6 +3,9 @@ const bannerAdSelector = "div#masthead-ad";
 const fakeVideoAdSelector = "ytd-ad-inline-playback-meta-block";
 const searchPopupAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-search-pyv-renderer";
 
+// Upsells
+const youtubeTvUpsellSelector = "ytd-primetime-promo-renderer.style-scope.ytd-rich-section-renderer";
+
 // Video player + friends
 const adTextQuerySelector = "a.ytp-title-link.yt-uix-sessionlink.ytp-title-fullerscreen-link";
 const usualTitleSelector = "yt-formatted-string.style-scope.ytd-watch-metadata";
@@ -24,7 +27,10 @@ const observer = new MutationObserver((mutations) => {
 async function doMainPageAdsChecker() {
   // == Main page ==
   document.querySelectorAll(bannerAdSelector).forEach((i) => i.remove());
-  document.querySelectorAll(fakeVideoAdSelector).forEach((i) => i.parentElement.parentElement.remove()); // FIXME: improve this?
+
+  // FIXME: improve these?
+  document.querySelectorAll(fakeVideoAdSelector).forEach((i) => i.parentElement.parentElement.remove()); 
+  document.querySelectorAll(youtubeTvUpsellSelector).forEach((i) => i.parentElement.parentElement.remove());
   
   // == Search ==
   document.querySelectorAll(searchPopupAdSelector).forEach((i) => i.remove());
