@@ -1,3 +1,14 @@
+// ==UserScript==
+// @name         SeeingRed
+// @namespace    http://github.com/greysoh/
+// @version      1.0.0
+// @description  A stupidly simple YouTube adblock implementation.
+// @author       @greysoh
+// @match        *://*.youtube.com/*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
 // Home page
 const bannerAdSelector = "div#masthead-ad";
 const fakeVideoAdSelector = "ytd-ad-inline-playback-meta-block";
