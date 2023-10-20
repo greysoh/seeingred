@@ -9,8 +9,14 @@
     "48": "icons/48px.png"
   },
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "seeingred_dev@greysoh"
+    }
+  },
+
   "permissions": [],
-  "host_permissions": ["*://*/*"],
+  "host_permissions": ["*://*.youtube.com/*"],
 
   "web_accessible_resources": [{
     "matches": ["*://*.youtube.com/*"],
