@@ -1,8 +1,15 @@
-console.log("[debug] Monitoring begin.");
+// Home page
+const bannerAdSelector = "div#masthead-ad";
+const fakeVideoAdSelector = "ytd-ad-inline-playback-meta-block";
+const searchPopupAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-search-pyv-renderer";
 
+// Video player + friends
 const adTextQuerySelector = "a.ytp-title-link.yt-uix-sessionlink.ytp-title-fullerscreen-link";
 const usualTitleSelector = "yt-formatted-string.style-scope.ytd-watch-metadata";
 const videoPlayerSelector = "video.video-stream.html5-main-video";
+
+// Video player recommended
+const fakeRecommendedAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-watch-next-secondary-results-renderer";
 
 let oldHref = window.location.href;
 let isRunningAdObserver = window.location.href.includes("watch?v=");
@@ -15,11 +22,19 @@ const observer = new MutationObserver((mutations) => {
 });
 
 async function doMainPageAdsChecker() {
+  // == Main page ==
+  document.querySelectorAll(bannerAdSelector).forEach((i) => i.remove());
+  document.querySelectorAll(fakeVideoAdSelector).forEach((i) => i.parentElement.parentElement.remove()); // FIXME: improve this?
+  
+  // == Search ==
+  document.querySelectorAll(searchPopupAdSelector).forEach((i) => i.remove());
 }
 
 let prevTitle;
 
 async function doBackgroundAdsChecker() {
+  document.querySelectorAll(fakeRecommendedAdSelector).forEach((i) => i.remove());
+
   const usualAdTextElement = document.querySelector(adTextQuerySelector);
   const usualTitleElement = document.querySelector(usualTitleSelector);
 
@@ -35,8 +50,8 @@ async function doBackgroundAdsChecker() {
     iCanHazFlag = true;
 
     videoPlayer.style.visibility = "hidden";
-    videoPlayer.pause();
     videoPlayer.muted = true;
+    videoPlayer.pause();
   }
 
   while (usualAdTextElement.innerText != usualTitleElement.innerText && previousTitleIsAMatch) {
