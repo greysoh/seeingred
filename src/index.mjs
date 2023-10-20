@@ -17,6 +17,8 @@ const observer = new MutationObserver((mutations) => {
 async function doMainPageAdsChecker() {
 }
 
+let prevTitle;
+
 async function doBackgroundAdsChecker() {
   const usualAdTextElement = document.querySelector(adTextQuerySelector);
   const usualTitleElement = document.querySelector(usualTitleSelector);
@@ -26,8 +28,10 @@ async function doBackgroundAdsChecker() {
   
   const videoPlayer = document.querySelector(videoPlayerSelector);
   if (usualAdTextElement.innerText.trim() == "" || usualTitleElement.innerText.trim() == "") return;
+
+  const previousTitleIsAMatch = prevTitle == usualTitleElement.innerText && prevTitle != "";
   
-  else if (usualAdTextElement.innerText != usualTitleElement.innerText) {
+  if (usualAdTextElement.innerText != usualTitleElement.innerText && previousTitleIsAMatch) {
     iCanHazFlag = true;
 
     videoPlayer.style.visibility = "hidden";
@@ -35,7 +39,7 @@ async function doBackgroundAdsChecker() {
     videoPlayer.muted = true;
   }
 
-  while (usualAdTextElement.innerText != usualTitleElement.innerText) {
+  while (usualAdTextElement.innerText != usualTitleElement.innerText && previousTitleIsAMatch) {
     videoPlayer.currentTime += 4;
     await new Promise((i) => setTimeout(i, 5));
   }
@@ -47,6 +51,8 @@ async function doBackgroundAdsChecker() {
 
     videoPlayer.play();
   }
+
+  prevTitle = usualTitleElement.innerText;
 }
 
 async function oneTrueMain() {
