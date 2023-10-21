@@ -9,10 +9,12 @@
 // @run-at       document-start
 // ==/UserScript==
 
+// Commons
+const fakeRecommendedAdSelector = "ytd-ad-slot-renderer";
+
 // Home page
-const bannerAdSelector = "div#masthead-ad";
 const fakeVideoAdSelector = "ytd-ad-inline-playback-meta-block";
-const searchPopupAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-search-pyv-renderer";
+const bannerAdSelector = "div#masthead-ad";
 
 // Upsells
 const youtubeTvUpsellSelector = "ytd-primetime-promo-renderer.style-scope.ytd-rich-section-renderer";
@@ -24,7 +26,7 @@ const usualTitleSelector = "yt-formatted-string.style-scope.ytd-watch-metadata";
 const videoPlayerSelector = "video.video-stream.html5-main-video";
 
 // Video player recommended
-const fakeRecommendedAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-watch-next-secondary-results-renderer";
+const engageSelector = "ytd-engagement-panel-section-list-renderer";
 
 let oldHref = window.location.href;
 let isRunningAdObserver = window.location.href.includes("watch?v=");
@@ -47,12 +49,13 @@ async function doMainPageAdsChecker() {
   document.querySelectorAll(youtubeTvUpsellSelector).forEach((i) => i.parentElement.parentElement.remove());
   
   // == Search ==
-  document.querySelectorAll(searchPopupAdSelector).forEach((i) => i.remove());
+  document.querySelectorAll(fakeRecommendedAdSelector).forEach((i) => i.remove());
 }
 
 async function doBackgroundAdsChecker() {
   document.querySelectorAll(fakeRecommendedAdSelector).forEach((i) => i.remove());
   document.querySelectorAll(playerUpsellerSelector).forEach((i) => i.remove());
+  document.querySelectorAll(engageSelector).forEach((i) => i.remove());
 
   const usualAdTextElement = document.querySelector(adTextQuerySelector);
   const usualTitleElement = document.querySelector(usualTitleSelector);
