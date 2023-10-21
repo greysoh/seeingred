@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SeeingRed
 // @namespace    http://github.com/greysoh/
-// @version      1.0.0
+// @version      1.0.1
 // @description  A stupidly simple YouTube adblock implementation.
 // @author       @greysoh
 // @match        *://*.youtube.com/*
@@ -16,6 +16,7 @@ const searchPopupAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-search-pyv-r
 
 // Upsells
 const youtubeTvUpsellSelector = "ytd-primetime-promo-renderer.style-scope.ytd-rich-section-renderer";
+const playerUpsellerSelector = "yt-mealbar-promo-renderer.style-scope.ytd-popup-container";
 
 // Video player + friends
 const adTextQuerySelector = "a.ytp-title-link.yt-uix-sessionlink.ytp-title-fullerscreen-link";
@@ -51,6 +52,7 @@ let prevTitle;
 
 async function doBackgroundAdsChecker() {
   document.querySelectorAll(fakeRecommendedAdSelector).forEach((i) => i.remove());
+  document.querySelectorAll(playerUpsellerSelector).forEach((i) => i.remove());
 
   const usualAdTextElement = document.querySelector(adTextQuerySelector);
   const usualTitleElement = document.querySelector(usualTitleSelector);
