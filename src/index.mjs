@@ -29,6 +29,8 @@ const fakeRecommendedAdSelector = "ytd-ad-slot-renderer.style-scope.ytd-watch-ne
 let oldHref = window.location.href;
 let isRunningAdObserver = window.location.href.includes("watch?v=");
 
+let prevTitle;
+
 const observer = new MutationObserver((mutations) => {
   if (oldHref != window.location.href) {
     oldHref = window.location.href;
@@ -47,8 +49,6 @@ async function doMainPageAdsChecker() {
   // == Search ==
   document.querySelectorAll(searchPopupAdSelector).forEach((i) => i.remove());
 }
-
-let prevTitle;
 
 async function doBackgroundAdsChecker() {
   document.querySelectorAll(fakeRecommendedAdSelector).forEach((i) => i.remove());
